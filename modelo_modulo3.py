@@ -12,10 +12,10 @@ from parametros_modulo3 import PARAMS
 
 
 DEFAULT_SUPUESTOS_2026 = {
-    "crecimiento_real": 0.022619830085555126,
-    "deflactor": 0.048,
-    "precio_petroleo": 54.9,
-    "tipo_cambio": 19.3,
+    "crecimiento_real": 0.019938152,
+    "deflactor": 0.038,
+    "precio_petroleo": 77.3,
+    "tipo_cambio": 18.4,
     "produccion_petrolera": 1794.0,
     "consumo_energia": 10790.064,
     "cetes_28": float(PARAMS["cetes_28_base"][2026]),

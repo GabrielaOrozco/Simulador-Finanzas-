@@ -176,15 +176,21 @@ def construir_grafica_pct(
         color = color_map.get(serie)
         x_hist = sorted(historico_map.keys())
         y_hist = [historico_map[x] for x in x_hist]
-        x_fut = sorted(proyeccion[serie].keys())
-        y_fut = [proyeccion[serie][x] for x in x_fut]
 
-        ax.plot(x_hist, y_hist, linewidth=2.2, linestyle="-", color=color, label=serie)
-        ax.plot(x_fut, y_fut, linewidth=2.2, linestyle="--", color=color, label="_nolegend_")
+        x_proj = sorted(proyeccion[serie].keys())
+        y_proj = [proyeccion[serie][x] for x in x_proj]
+
+        # Para evitar huecos visuales, la línea punteada arranca en el último
+        # punto histórico y desde ahí conecta con 2026-2030.
+        x_fut = [x_hist[-1]] + x_proj
+        y_fut = [y_hist[-1]] + y_proj
+
+        ax.plot(x_hist, y_hist, linewidth=2.2, linestyle='-', color=color, label=serie)
+        ax.plot(x_fut, y_fut, linewidth=2.2, linestyle='--', color=color, label='_nolegend_')
 
     ax.set_title(titulo)
-    ax.set_xlabel("Año")
-    ax.set_ylabel("% del PIB")
+    ax.set_xlabel('Año')
+    ax.set_ylabel('% del PIB')
     ax.set_xticks(list(range(2015, 2031)))
     ax.set_xticklabels([str(x) for x in range(2015, 2031)], rotation=45)
     ax.yaxis.set_major_formatter(PercentFormatter(xmax=100, decimals=1))
