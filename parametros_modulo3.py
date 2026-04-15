@@ -22,13 +22,13 @@ PARAMS = {
         2026: {
             "produccion_petrolera": 1794.0,
             "precio_petroleo": 77.3,
-            "tipo_cambio": 18.4,
+            "tipo_cambio": 19.3,
             "consumo_energia": 10790.064,
         },
         2027: {
             "produccion_petrolera": 1806.0,
             "precio_petroleo": 54.7,
-            "tipo_cambio": 18.2,
+            "tipo_cambio": 18.5,
             "consumo_energia": 11035.0944,
         },
         2028: {

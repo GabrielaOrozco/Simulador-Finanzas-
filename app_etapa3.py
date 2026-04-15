@@ -24,6 +24,8 @@ st.set_page_config(page_title="Simulador de Finanzas Públicas", layout="wide")
 
 ANIOS_MODULO_3 = [2026, 2027, 2028, 2029, 2030]
 ANIOS_HIST = list(range(2015, 2026))
+UNIDAD_MMDP = "Unidad: miles de millones de pesos (mmdp)"
+UNIDAD_PCT_PIB = "Unidad: % del PIB"
 
 
 @st.cache_data
@@ -189,7 +191,7 @@ def construir_grafica_pct(
         ax.plot(x_fut, y_fut, linewidth=2.2, linestyle='--', color=color, label='_nolegend_')
 
     ax.set_title(titulo)
-    ax.set_xlabel('Año')
+    ax.set_xlabel('')
     ax.set_ylabel('% del PIB')
     ax.set_xticks(list(range(2015, 2031)))
     ax.set_xticklabels([str(x) for x in range(2015, 2031)], rotation=45)
@@ -290,12 +292,6 @@ with st.sidebar.expander("Parámetros del modelo", expanded=True):
         step=0.1,
         format="%.1f",
     )
-    pemex_factor_ajuste = st.number_input(
-        "Factor de ajuste Pemex",
-        value=float(PARAMS["pemex_factor_ajuste"]),
-        step=0.01,
-        format="%.2f",
-    )
 
 trayectoria = calcular_modulo_3_trayectoria(
     crecimiento_real_2026=crecimiento_real,
@@ -308,7 +304,6 @@ trayectoria = calcular_modulo_3_trayectoria(
     tasa_fed_2026=tasa_fed,
     elasticidad_tributarios=elasticidad_tributarios,
     pct_no_tributarios_pib_2026=pct_no_tributarios_pib,
-    pemex_factor_ajuste=pemex_factor_ajuste,
 )
 
 resultados_ingresos_2026 = trayectoria["ingresos_por_anio"][2026]
@@ -328,6 +323,7 @@ tab1, tab2, tab3 = st.tabs(
 
 with tab1:
     st.subheader("Resultados clave 2026")
+    st.caption(UNIDAD_MMDP)
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         metrica("Ingresos presupuestarios", resultados_ingresos_2026["Ingresos presupuestarios"])
@@ -348,7 +344,7 @@ with tab1:
     with c8:
         metrica("PIB nominal", resultados_ingresos_2026["PIB nominal"])
 
-    st.markdown("**Tabla base 2026**")
+    st.markdown("**Tabla base 2026 (mmdp)**")
     tabla_2026 = pd.concat(
         [
             trayectoria["tablas_ingresos"][2026].rename(columns={"Monto 2026": "Monto"}),
@@ -359,6 +355,7 @@ with tab1:
     st.dataframe(formatear_tabla(tabla_2026), use_container_width=True, hide_index=True)
 
     st.markdown("**Gráficas (% del PIB)**")
+    st.caption(UNIDAD_PCT_PIB)
     if not MATPLOTLIB_OK:
         st.warning("Matplotlib no está disponible en este entorno. Instálalo para ver las gráficas.")
     else:
@@ -445,6 +442,7 @@ with tab1:
 
 with tab2:
     st.subheader("Ingresos 2026-2030")
+    st.caption(UNIDAD_MMDP)
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         metrica("Ingresos presupuestarios", res_ing["Ingresos presupuestarios"])
@@ -455,14 +453,16 @@ with tab2:
     with c4:
         metrica("PIB nominal", res_ing["PIB nominal"])
 
-    st.markdown("**Trayectoria de ingresos 2026-2030**")
+    st.markdown("**Trayectoria de ingresos 2026-2030 (mmdp)**")
     st.dataframe(formatear_tabla(tabla_ingresos_2026_2030), use_container_width=True, hide_index=True)
 
     st.markdown("**Trayectoria de ingresos 2026-2030 (% del PIB)**")
+    st.caption(UNIDAD_PCT_PIB)
     st.dataframe(formatear_tabla_pct(tabla_ingresos_pct_pib), use_container_width=True, hide_index=True)
 
 with tab3:
     st.subheader("Egresos 2026-2030")
+    st.caption(UNIDAD_MMDP)
     c1, c2, c3, c4 = st.columns(4)
     with c1:
         metrica("Gasto neto pagado", res_egr["Gasto neto pagado"])
@@ -473,8 +473,9 @@ with tab3:
     with c4:
         metrica("RFSP", res_egr["RFSP"])
 
-    st.markdown("**Trayectoria de egresos 2026-2030**")
+    st.markdown("**Trayectoria de egresos 2026-2030 (mmdp)**")
     st.dataframe(formatear_tabla(tabla_egresos_2026_2030), use_container_width=True, hide_index=True)
 
     st.markdown("**Trayectoria de egresos 2026-2030 (% del PIB)**")
+    st.caption(UNIDAD_PCT_PIB)
     st.dataframe(formatear_tabla_pct(tabla_egresos_pct_pib), use_container_width=True, hide_index=True)
